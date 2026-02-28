@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Energie & Welzijn (ADD) Tracker</title>
+
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div>
+        <div class="title">Energie & Welzijn (ADD) Tracker</div>
+        <div class="subtitle">Mobile-first • PWA/offline • lokaal opgeslagen op je device</div>
+      </div>
+
+      <div class="btn-row">
+        <div class="tabs">
+          <button id="tabLog" class="pill active" type="button">Invoer</button>
+          <button id="tabDash" class="pill" type="button">Dashboard</button>
+        </div>
+        <button id="btnExportImport" class="btn" type="button">Export / Import</button>
+      </div>
+    </div>
+
+    <div id="exportImport" class="card" style="display:none;">
+      <div class="card-head sticky-head">
+        <div class="card-title">Export / Import</div>
+        <button id="btnCloseExport" class="btn" type="button">Sluiten</button>
+      </div>
+
+      <div class="grid">
+        <div class="card" style="box-shadow:none;">
+          <div class="card-title">Export (kopieer & bewaar)</div>
+          <p class="small-note">Tip: plak in Notes/Drive of mail naar jezelf als backup.</p>
+          <textarea id="exportText" readonly></textarea>
+          <div class="btn-row" style="margin-top:10px;">
+            <button id="btnCopyExport" class="btn primary" type="button">Kopieer export</button>
+          </div>
+        </div>
+
+        <div class="card" style="box-shadow:none;">
+          <div class="card-title">Import (plak JSON om te herstellen/overzetten)</div>
+          <textarea id="importText" placeholder="Plak hier de JSON export..."></textarea>
+          <div class="btn-row" style="margin-top:10px;">
+            <button id="btnImport" class="btn primary" type="button">Importeren</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="viewLog">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">Kies datum</div>
+          <div class="btn-row">
+            <button id="btnPrevDay" class="btn" type="button">◀︎</button>
+            <button id="btnNextDay" class="btn" type="button">▶︎</button>
+          </div>
+        </div>
+        <div class="two-col">
+          <div class="small-note">Tip: log super kort (30–60 sec). Daarna druk je op <b>Opslaan</b>.</div>
+          <input id="datePicker" type="date" />
+        <div class="datechips" id="dateChips"></div>
+        <div class="small-note" id="dateStatus" style="margin-top:8px;">Status: —</div>
+        <div class="small-note" style="margin-top:4px;">Groen = ingevuld • grijs = nog open</div>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="card sec-scores">
+          <div class="card-title">Scores (0–10)</div>
+
+          <div class="field">
+            <div class="slider-wrap">
+              <div class="slider-top"><span>laag</span><span>hoog</span></div>
+              <div class="slider-row">
+                <input id="energyLevel" type="range" min="0" max="10" step="1" />
+                <div id="energyLevelVal" class="slider-value">—</div>
+              </div>
+              <div style="font-weight:650;">Energie</div>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="slider-wrap">
+              <div class="slider-top"><span>wazig</span><span>scherp</span></div>
+              <div class="slider-row">
+                <input id="focusLevel" type="range" min="0" max="10" step="1" />
+                <div id="focusLevelVal" class="slider-value">—</div>
+              </div>
+              <div style="font-weight:650;">Focus (ADD)</div>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="slider-wrap">
+              <div class="slider-top"><span>rustig</span><span>overprikkeld</span></div>
+              <div class="slider-row">
+                <input id="symptomLoad" type="range" min="0" max="10" step="1" />
+                <div id="symptomLoadVal" class="slider-value">—</div>
+              </div>
+              <div style="font-weight:650;">Klachtenlast (brain fog / onrust / prikkelbaarheid)</div>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="slider-wrap">
+              <div class="slider-top"><span>slecht</span><span>top</span></div>
+              <div class="slider-row">
+                <input id="sleepQuality" type="range" min="0" max="10" step="1" />
+                <div id="sleepQualityVal" class="slider-value">—</div>
+              </div>
+              <div style="font-weight:650;">Nachtrust kwaliteit</div>
+            </div>
+          </div>
+
+          <div class="two-col">
+            <div class="field">
+              <div class="field-label">Slaapuren <span class="field-hint">schatting is prima</span></div>
+              <div class="field-body"><input id="sleepHours" type="number" min="0" max="24" step="0.25" placeholder="—" /></div>
+            </div>
+
+            <div class="field">
+              <div class="field-label">Uitgerust wakker?</div>
+              <div class="field-body"><select id="wokeRestedSelect" class="bool"><option value="null">Leeg</option><option value="true">Ja</option><option value="false">Nee</option></select></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card sec-context">
+          <div class="card-head">
+            <div class="card-title">Dagfactoren die vaak veel invloed hebben</div>
+            <div class="field-hint">snel invullen • helpt patronen verklaren</div>
+          </div>
+
+          <div class="field">
+            <div class="slider-wrap">
+              <div class="slider-top"><span>laag</span><span>hoog</span></div>
+              <div class="slider-row">
+                <input id="stressLevel" type="range" min="0" max="10" step="1" />
+                <div id="stressLevelVal" class="slider-value">—</div>
+              </div>
+              <div style="font-weight:650;">Stress / prikkels</div>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="field-label">Laatste cafeïne <span class="field-hint">i.v.m. slaap-impact</span></div>
+            <div class="field-body">
+              <select id="caffeineTiming">
+                <option value="none">Geen</option>
+                <option value="morning">Ochtend</option>
+                <option value="afternoon">Middag</option>
+                <option value="evening">Avond</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="two-col">
+            <div class="field">
+              <div class="field-label">Scherm na 21:00?</div>
+              <div class="field-body"><select id="screenLateSelect" class="bool"><option value="null">Leeg</option><option value="true">Ja</option><option value="false">Nee</option></select></div>
+            </div>
+            <div class="field">
+              <div class="field-label">Medicatie zoals gepland? <span class="field-hint">optioneel</span></div>
+              <div class="field-body"><select id="medsAsPlannedSelect" class="bool"><option value="null">Leeg</option><option value="true">Ja</option><option value="false">Nee</option></select></div>
+            </div>
+          </div>
+
+          <div class="small-note">Tip: als je geen medicatie gebruikt, laat dit leeg.</div>
+        </div>
+
+        <div class="card sec-energy">
+          <div class="card-head">
+            <div class="card-title">Wat gaf energie (max 3)</div>
+            <div class="field-hint">kort houden</div>
+          </div>
+          <div class="field"><input id="giver1" type="text" placeholder="Energiegever 1..." /></div>
+          <div class="field"><input id="giver2" type="text" placeholder="Energiegever 2..." /></div>
+          <div class="field"><input id="giver3" type="text" placeholder="Energiegever 3..." /></div>
+        </div>
+
+        <div class="card sec-food">
+          <div class="card-title">Voeding</div>
+
+          <div class="field">
+            <div class="field-label">Snelle tags <span class="field-hint">tikt sneller aan dan alles uitschrijven</span></div>
+            <div class="badges" id="foodTags"></div>
+          </div>
+
+          <div class="field">
+            <div class="field-label">Ontbijt</div>
+            <div class="field-body"><input id="foodBreakfast" type="text" placeholder="bv. yoghurt alternatief + fruit / niets" /></div>
+          </div>
+          <div class="field">
+            <div class="field-label">Lunch</div>
+            <div class="field-body"><input id="foodLunch" type="text" placeholder="bv. salade / soep" /></div>
+          </div>
+          <div class="field">
+            <div class="field-label">Diner</div>
+            <div class="field-body"><input id="foodDinner" type="text" placeholder="bv. rijst + groente + kip" /></div>
+          </div>
+          <div class="field">
+            <div class="field-label">Tussendoortjes / drinken</div>
+            <div class="field-body"><input id="foodSnacks" type="text" placeholder="bv. water / thee / snack" /></div>
+          </div>
+        </div>
+
+        <div class="card sec-cycle">
+          <div class="card-title">Menstruatie & cyclus</div>
+
+          <div class="two-col">
+            <div class="field">
+              <div class="field-label">Bloeding</div>
+              <div class="field-body">
+                <select id="cycleBleeding">
+                  <option value="none">Geen</option>
+                  <option value="spotting">Spotting</option>
+                  <option value="light">Licht</option>
+                  <option value="medium">Medium</option>
+                  <option value="heavy">Hevig</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="field-label">Cyclusdag <span class="field-hint">als je ’m weet</span></div>
+              <div class="field-body"><input id="cycleDay" type="text" placeholder="bv. 12" /></div>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="field-label">Fase <span class="field-hint">optioneel</span></div>
+            <div class="field-body">
+              <select id="cyclePhase">
+                <option value="unknown">Onbekend</option>
+                <option value="menstrual">Menstruatie</option>
+                <option value="follicular">Folliculair</option>
+                <option value="ovulation">Ovulatie</option>
+                <option value="luteal">Luteaal</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="field-label">Cyclus-symptomen <span class="field-hint">bv. cravings / prikkelbaar / hoofdpijn</span></div>
+            <div class="field-body"><input id="cycleSymptoms" type="text" placeholder="kort noteren..." /></div>
+          </div>
+        </div>
+
+        <div class="card sec-acts">
+          <div class="card-title">Sport & muziek</div>
+
+          <div class="two-col">
+            <div class="field">
+              <div class="field-label">Gesport?</div>
+              <div class="field-body"><select id="didSportSelect" class="bool"><option value="null">Leeg</option><option value="true">Ja</option><option value="false">Nee</option></select></div>
+            </div>
+            <div class="field">
+              <div class="field-label">Sport minuten</div>
+              <div class="field-body"><input id="sportMinutes" type="number" min="0" max="600" placeholder="—" /></div>
+            </div>
+          </div>
+
+          <div class="two-col">
+            <div class="field">
+              <div class="field-label">Muziek gemaakt?</div>
+              <div class="field-body"><select id="didMusicSelect" class="bool"><option value="null">Leeg</option><option value="true">Ja</option><option value="false">Nee</option></select></div>
+            </div>
+            <div class="field">
+              <div class="field-label">Muziek minuten</div>
+              <div class="field-body"><input id="musicMinutes" type="number" min="0" max="600" placeholder="—" /></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card sec-notes">
+          <div class="card-title">Opmerkingen (belangrijk voor verbanden)</div>
+          <div class="field">
+            <div class="field-label">Notities <span class="field-hint">bv. uitzonderingen, ziekte, reizen, etc.</span></div>
+            <div class="field-body">
+              <textarea id="notes" placeholder="Schrijf alleen wat relevant is..."></textarea>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="viewDash" style="display:none;">
+      <div class="grid">
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">In 1 oogopslag (alle ingevulde dagen)</div>
+            <div class="field-hint">gemiddelden + fase-inzicht</div>
+          </div>
+          <div class="kpi-row" id="kpis"></div>
+          <div class="small-note">Dit gebruikt alle dagen die je ooit hebt opgeslagen.</div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">Inzichten (auto)</div>
+            <div class="field-hint">kleine verschillen, geen medische claims</div>
+          </div>
+          <div id="insights" class="insights"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">Vergelijkingen per tag</div>
+            <div class="field-hint">met vs zonder • incl. n= per groep</div>
+          </div>
+          <div id="tagComparisons" class="compare"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">Gemiddelden per cyclusfase (alle ingevulde dagen)</div>
+            <div class="field-hint">energie • focus • slaap</div>
+          </div>
+          <div class="chart"><canvas id="chartPhase" width="900" height="280"></canvas></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">Weektrend (7 dagen vanaf gekozen datum)</div>
+            <div class="field-hint">Energie • Focus • Slaap</div>
+          </div>
+          <div class="chart"><canvas id="chartWeek" width="900" height="280"></canvas></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">Maandtrend (30 dagen vanaf gekozen datum)</div>
+            <div class="field-hint">Energie • Focus • Slaap • Klachtenlast</div>
+          </div>
+          <div class="chart"><canvas id="chartMonth" width="900" height="280"></canvas></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">Activiteiten (30 dagen vanaf gekozen datum)</div>
+            <div class="field-hint">sport/muziek minuten</div>
+          </div>
+          <div class="chart"><canvas id="chartActivity" width="900" height="280"></canvas></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Correlatie (week): Energie vs Focus</div>
+          <div class="chart"><canvas id="chartScatter" width="900" height="280"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="savebar" id="savebar">
+      <div class="inner">
+        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+          <div style="font-weight:900;">Invoer opslaan</div>
+          <div class="small-note" id="unsavedHint">Wijzigingen nog niet opgeslagen</div>
+        </div>
+        <div class="btn-row">
+          <button id="saveBtn" class="btn primary" type="button">Opslaan</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast">Opgeslagen</div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
