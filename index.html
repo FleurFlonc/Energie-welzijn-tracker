@@ -201,6 +201,7 @@ function renderDateChips(){
 
   const exportImport = $("exportImport");
   const btnExportImport = $("btnExportImport");
+  const btnResetCache = $("btnResetCache");
   const btnCloseExport = $("btnCloseExport");
   const exportText = $("exportText");
   const importText = $("importText");
@@ -343,6 +344,36 @@ function showToast(msg){
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
   btnCloseExport.addEventListener("click", () => exportImport.style.display = "none");
+
+
+if (btnResetCache){
+  btnResetCache.addEventListener("click", async () => {
+    try{
+      // Try to activate newest SW quickly
+      if (navigator.serviceWorker?.controller) {
+        navigator.serviceWorker.controller.postMessage({ type: "SKIP_WAITING" });
+      }
+
+      // Unregister SW (keeps your saved localStorage data intact)
+      if ("serviceWorker" in navigator) {
+        const regs = await navigator.serviceWorker.getRegistrations();
+        await Promise.all(regs.map(r => r.unregister()));
+      }
+
+      // Clear caches (offline files)
+      if ("caches" in window) {
+        const keys = await caches.keys();
+        await Promise.all(keys.map(k => caches.delete(k)));
+      }
+
+      alert("Cache gereset. De app wordt opnieuw geladen.");
+      location.reload();
+    }catch(e){
+      alert("Cache reset lukte niet helemaal. Probeer Safari volledig te sluiten en opnieuw te openen.");
+    }
+  });
+}
+
 
   btnCopyExport.addEventListener("click", async () => {
     try{

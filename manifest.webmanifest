@@ -24,6 +24,7 @@
           <button id="tabDash" class="pill" type="button">Dashboard</button>
         </div>
         <button id="btnExportImport" class="btn" type="button">Export / Import</button>
+        <button id="btnResetCache" class="btn" type="button">Cache reset</button>
       </div>
     </div>
 

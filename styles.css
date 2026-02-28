@@ -1,4 +1,4 @@
-const CACHE_NAME = "welzijn-tracker-cache-v1";
+const CACHE_NAME = "welzijn-tracker-cache-v3_2";
 const PRECACHE_URLS = [
   "./",
   "./index.html",
@@ -47,4 +47,11 @@ self.addEventListener("fetch", (event) => {
         });
     })
   );
+});
+
+
+self.addEventListener("message", (event) => {
+  if (event.data && event.data.type === "SKIP_WAITING") {
+    self.skipWaiting();
+  }
 });
