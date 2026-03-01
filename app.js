@@ -558,12 +558,7 @@ if (medsAsPlannedSelect) medsAsPlannedSelect.value = boolToSelectValue(draft.med
 if (didSportSelect) didSportSelect.value = boolToSelectValue(draft.activities.didSport);
 if (didMusicSelect) didMusicSelect.value = boolToSelectValue(draft.activities.didMusic);
 
-
-    renderTri(wokeRestedTri, draft.wokeRested, (v)=>{ draft.wokeRested=v; markDirty(); });
-    renderTri(screenLateTri, draft.screenLate, (v)=>{ draft.screenLate=v; markDirty(); });
-    renderTri(medsAsPlannedTri, draft.medsAsPlanned, (v)=>{ draft.medsAsPlanned=v; markDirty(); });
-    renderTri(didSportTri, draft.activities.didSport, (v)=>{ draft.activities.didSport=v; markDirty(); });
-    renderTri(didMusicTri, draft.activities.didMusic, (v)=>{ draft.activities.didMusic=v; markDirty(); });
+    // NOTE: renderTri(...) calls removed (dropdowns are used instead)
 
     renderEmptyFlags();
   }
