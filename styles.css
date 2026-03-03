@@ -70,7 +70,7 @@ canvas{ max-width:100%; }
 .compare-row .h{ display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; font-weight:850; }
 .compare-row .m{ margin-top:6px; color: rgba(0,0,0,0.70); font-size:13px; line-height:18px; font-variant-numeric: tabular-nums; }
 .sticky-head{ position: sticky; top:0; background:white; padding-top:6px; padding-bottom:8px; z-index:5; }
-.sec-scores{ border-left:6px solid rgba(0,0,0,0.18); background: rgba(0,0,0,0.01); }
+.sec-scores{ border-left:6px solid rgba(230, 242, 255); background: rgba(0,0,0,0.01); }
 .sec-context{ border-left:6px solid rgba(0,0,0,0.14); background: rgba(0,0,0,0.01); }
 .sec-energy{ border-left:6px solid rgba(0,0,0,0.12); background: rgba(0,0,0,0.01); }
 .sec-food{ border-left:6px solid rgba(0,0,0,0.10); background: rgba(0,0,0,0.01); }
