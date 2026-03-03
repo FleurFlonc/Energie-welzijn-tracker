@@ -1,7 +1,7 @@
 :root{
   --bg1: rgba(0,0,0,0.03);
   --bg2: rgba(0,0,0,0.01);
-  --card: rgba(179, 215, 255);
+  --card: rgba(242, 242, 242);
   --border: rgba(0,0,0,0.12);
   --text: rgba(0,0,0,0.88);
   --muted: rgba(0,0,0,0.70);
