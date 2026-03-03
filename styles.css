@@ -112,7 +112,7 @@ select.bool{ font-weight:800; }
 }
 .section-intro{
   margin-top:8px;
-  margin-bottom:14px;
+  margin-bottom:18px;
   color: var(--muted);
   font-size:13px;
 }
