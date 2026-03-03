@@ -110,3 +110,9 @@ select.bool{ font-weight:800; }
   transform: scale(1.05);
   cursor:pointer;
 }
+.section-intro{
+  margin-top:8px;
+  margin-bottom:14px;
+  color: var(--muted);
+  font-size:13px;
+}
