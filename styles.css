@@ -73,10 +73,10 @@ canvas{ max-width:100%; }
 .sec-scores{ border-left:6px solid rgba(0,0,0,0.16); background: rgba(230, 242, 255); }
 .sec-context{ border-left:6px solid rgba(0,0,0,0.14); background: rgba(230, 242, 255); }
 .sec-energy{ border-left:6px solid rgba(0,0,0,0.12); background: rgba(230, 242, 255); }
-.sec-food{ border-left:6px solid rgba(0,0,0,0.10); background: rgba(0,0,0,0.01); }
-.sec-cycle{ border-left:6px solid rgba(0,0,0,0.16); background: rgba(0,0,0,0.01); }
-.sec-acts{ border-left:6px solid rgba(0,0,0,0.10); background: rgba(0,0,0,0.01); }
-.sec-notes{ border-left:6px solid rgba(0,0,0,0.10); background: rgba(0,0,0,0.01); }
+.sec-food{ border-left:6px solid rgba(0,0,0,0.10); background: rgba(230, 242, 255); }
+.sec-cycle{ border-left:6px solid rgba(0,0,0,0.16); background: rgba(230, 242, 255); }
+.sec-acts{ border-left:6px solid rgba(0,0,0,0.10); background: rgba(230, 242, 255); }
+.sec-notes{ border-left:6px solid rgba(0,0,0,0.10); background: rgba(230, 242, 255); }
 .datechips{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
 .chip{ border:1px solid rgba(0,0,0,0.14); background: rgba(0,0,0,0.02); border-radius:999px; padding:8px 10px; font-weight:800; cursor:pointer; }
 .chip.filled{ background: rgba(0, 200, 120, 0.16); border-color: rgba(0, 200, 120, 0.35); }
